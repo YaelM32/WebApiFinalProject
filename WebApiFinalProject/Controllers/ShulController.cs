@@ -27,14 +27,9 @@ namespace WebApiFinalProject.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<ShulController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+   
 
-      
+       
 
         //[HttpPost]
         //public IActionResult PostFile(IFormFile file,)
