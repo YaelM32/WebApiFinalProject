@@ -21,7 +21,11 @@ namespace BusinessLogic.IService
         public  Task<List<Category>> GetCategories();
         public  Task<List<Author>> GetAuthors();
         public  Task<List<Edition>> GetEditions();
-                
+        //public Task AddAuthor(string authorName);
+        //public Task AddCategory( string categoryName);
+        //public Task AddEdition(string editionName);
+
+
 
 
     }

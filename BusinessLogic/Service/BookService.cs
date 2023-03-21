@@ -2,6 +2,7 @@
 using BusinessLogic.IService;
 using DataAccess.DBModels;
 using DataAccess.IRepository;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,5 +69,23 @@ namespace BusinessLogic.Service
         {
             return bookRepository.GetEditions();
         }
+
+        //public Task AddAuthor( string authorName)
+        //{
+        //    return bookRepository.AddAuthor(authorName);
+
+        //}
+
+        //public Task AddCategory( string categoryName)
+        //{
+        //    return bookRepository.AddCategory(categoryName);
+
+        //}
+
+        //public Task AddEdition(string editionName)
+        //{
+        //    return bookRepository.AddEdition(editionName);
+
+        //}
     }
 }

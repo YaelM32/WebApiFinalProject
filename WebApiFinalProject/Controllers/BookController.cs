@@ -59,7 +59,7 @@ namespace WebApiFinalProject.Controllers
             // b.books = mapper.Map<List<BookDto>>(l);
             foreach (var item in l)
             {
-                BookDto a = new BookDto(item.Id,item.Name, item.ChipId, item.VolumeNum, GetAuthor((int)item.AuthorId,null).Result.Item2, GetCategory((int)item.CategoryId,null).Result.Item2, GetEdition((int)item.EditionId,null).Result.Item2, item.PublishYear,item.ShulId);
+                BookDto a = new BookDto(item.Id,item.Name, item.ChipId, item.VolumeNum, GetAuthor((int)item.AuthorId,null).Result.Item2, GetCategory((int)item.CategoryId,null).Result.Item2,GetEdition((int)item.EditionId,null).Result.Item2, item.PublishYear,item.ShulId);
                 b.books.Add(a); 
     
             }
@@ -123,7 +123,7 @@ namespace WebApiFinalProject.Controllers
         [HttpPost, Route("AddNewBook")]
         public Task AddNewBook([FromBody] BookDto book)
         {  
-            BookDTO2 bDTO = new BookDTO2() {Name=book.Name, ChipId= book.ChipId, VolumeNum= book.VolumeNum, AuthorId= GetAuthor(null, (string)book.Author).Result.Item1, CategoryId= GetCategory(null, (string)book.Category).Result.Item1, EditionId= GetEdition(null, (string)book.Edition).Result.Item1, PublishYear=book.PublishYear, ShulId= book.ShulId };
+            BookDTO2 bDTO = new BookDTO2() {Name=book.Name, ChipId= book.ChipId, VolumeNum= book.VolumeNum, AuthorId= book.Author != "" ? GetAuthor(null, (string)book.Author).Result.Item1:6, CategoryId= book.Category != "" ? GetCategory(null, (string)book.Category).Result.Item1:6, EditionId = book.Edition != "" ? GetEdition(null, (string)book.Edition).Result.Item1:6, PublishYear=book.PublishYear, ShulId= book.ShulId };
             Book b = mapper.Map<Book>(bDTO);
             return bookService.AddNewBook(b);
         }
@@ -132,7 +132,7 @@ namespace WebApiFinalProject.Controllers
         [HttpPut, Route("UpdateBook")]
         public Task UpdateBook(int bookId, [FromBody] BookDto book)
         {
-            BookDTO2 bDTO = new BookDTO2() { Name = book.Name, ChipId = book.ChipId, VolumeNum = book.VolumeNum, AuthorId = GetAuthor(null, (string)book.Author).Result.Item1, CategoryId = GetCategory(null, (string)book.Category).Result.Item1, EditionId = GetEdition(null, (string)book.Edition).Result.Item1, PublishYear = book.PublishYear, ShulId = book.ShulId };
+            BookDTO2 bDTO = new BookDTO2() { Name = book.Name, ChipId = book.ChipId, VolumeNum = book.VolumeNum, AuthorId = GetAuthor(null, (string)book.Author).Result.Item1, CategoryId =  GetCategory(null, (string)book.Category).Result.Item1, EditionId = GetEdition(null, (string)book.Edition).Result.Item1, PublishYear = book.PublishYear, ShulId = book.ShulId };
             Book b = mapper.Map<Book>(bDTO);
             return bookService.UpdateBook(bookId, b);
         }
@@ -167,5 +167,20 @@ namespace WebApiFinalProject.Controllers
             List<EditionDto> e = mapper.Map<List<EditionDto>>(l);
             return e;
         }
+        //[HttpPost("AddAuthor")]
+        //public async Task AddAuthor([FromQuery]string authorName)
+        //{
+        //    return bookService.AddAuthor(authorName);
+        //}
+        //[HttpPost("AddCategory")]
+        //public async Task AddCategory([FromQuery] string categoryName)
+        //{
+        //    return bookService.AddCategory(categoryName);
+        //}
+        //[HttpPost("AddEdition")]
+        //public async Task AddEdition([FromQuery]string editionName)
+        //{
+        //    return bookService.AddEdition(editionName);
+        //}
     }
 }

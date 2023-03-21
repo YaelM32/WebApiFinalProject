@@ -9,9 +9,9 @@ namespace DataAccess.IRepository
 {
     public interface IUserRepository
     {
-        public Task<User> checkUserExist(string name, string password);
+        public Task<User> checkUserExist(string email, string password);
         public Task SignIn(User user);
-        public Task ChangePassword(string name, string Password);
-        public Task<string> getEmail(string name);
+        public Task ChangePassword(string email, string Password);
+        public Task getEmail(string email);
     }
 }

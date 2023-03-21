@@ -18,9 +18,9 @@ namespace BusinessLogic.Service
             userRepository = _userRepository;
         }
 
-        public Task<User> checkUserExist(string name, string password)
+        public Task<User> checkUserExist(string email, string password)
         {
-            return userRepository.checkUserExist(name, password);
+            return userRepository.checkUserExist(email, password);
         }
 
         public Task SignIn(User user)
@@ -28,14 +28,14 @@ namespace BusinessLogic.Service
             return userRepository.SignIn(user);
         }
 
-        public Task ChangePassword(string name, string Password)
+        public Task ChangePassword(string email, string Password)
         {
-            return userRepository.ChangePassword(name, Password);
+            return userRepository.ChangePassword(email, Password);
         }
 
-        public Task<string> getEmail(string name)
+        public Task getEmail(string email)
         {
-            return userRepository.getEmail(name);
+            return userRepository.getEmail(email);
 
         }
     }

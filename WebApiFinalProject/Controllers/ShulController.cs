@@ -2,7 +2,10 @@
 using BusinessLogic.Dto;
 using BusinessLogic.IService;
 using DataAccess.DBModels;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using static System.Net.Mime.MediaTypeNames;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,27 +24,6 @@ namespace WebApiFinalProject.Controllers
         }
 
         // GET: api/<ShulController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
-   
-
-       
-
-        //[HttpPost]
-        //public IActionResult PostFile(IFormFile file,)
-        //{
-
-        //    var saveFilePath = Path.Combine("c:\\savefilepath\\", model.UploaderAddress!);
-        //    using (var stream = new FileStream(saveFilePath, FileMode.Create))
-        //    {
-        //        file.CopyToAsync(stream);
-        //    }
-        //    return Ok();
-        //}
 
 
         // POST api/<ShulController>
@@ -51,23 +33,54 @@ namespace WebApiFinalProject.Controllers
            // string saveFilePath = Path.Combine("M:\\Final Project\\WebApiFinalProject\\WebApiFinalProject\\wwwroot\\images", shulDto.Name);
            
             Shul shul = mapper.Map<Shul>(shulDto);
-            return shulService.SignIn(shul);//, saveFilePath);
-        }
-        // PUT api/<ShulController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-
+            return shulService.SignIn(shul);
         }
 
-        // DELETE api/<ShulController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+
+        [HttpPost, Route("UploadImage")]
+        public async Task UploadFile(int shulId,IFormFile userfile)
         {
+
+            try
+            {
+               shulService.UploadFile(shulId, userfile);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            try
+            {
+                string filename = userfile.FileName;
+                filename = Path.GetFileName(filename);
+                string uploadFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", filename);
+                await using var stream = new FileStream(uploadFilePath, FileMode.Create);
+                await userfile.CopyToAsync(stream);
+                SetMap(shulId, userfile.FileName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            
         }
+        [HttpPut("SetMap")]
+
+        public Task SetMap(int shulId, string Filename)
+        {
+            return shulService.SetMap(shulId, Filename);
+        }
+
+        [HttpGet("GetShulById")]
+        public async Task<ShulDto> GetShulById([FromQuery] int shulId)
+        {
+            Shul s = await shulService.GetShulById(shulId);
+            return mapper.Map<ShulDto>(s);
+        }
+
+    }
     }
 
 
 
 
-}

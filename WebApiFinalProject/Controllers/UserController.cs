@@ -26,9 +26,9 @@ namespace WebApiFinalProject.Controllers
         // GET: api/<UserController>
         [EnableCors("AllowOrigin")]
         [HttpGet,Route("login")]
-        public async Task<User> checkUserExist(string name, string password)
+        public async Task<User> checkUserExist(string email, string password)
         {
-           return await userService.checkUserExist(name, password);
+           return await userService.checkUserExist(email, password);
         }
        
 
@@ -41,15 +41,15 @@ namespace WebApiFinalProject.Controllers
         }
 
         // PUT api/<UserController>
-        [HttpPut("{name}")]
-        public Task ChangePassword(string name,[FromBody] string Password)
+        [HttpPut("ChangePassword")]
+        public Task ChangePassword(string email, string Password)
         {
-            return userService.ChangePassword(name, Password);
+            return userService.ChangePassword(email, Password);
         }
-        [HttpGet("getEmailByName")]
-        public Task<string> getEmail(string name)
+        [HttpGet("getEmail")]
+        public Task getEmail([FromQuery]string email)
         {
-            return userService.getEmail(name);
+            return userService.getEmail(email);
         }
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]

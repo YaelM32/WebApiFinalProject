@@ -1,4 +1,6 @@
-﻿using DataAccess.DBModels;
+﻿using BusinessLogic.Dto;
+using DataAccess.DBModels;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,10 @@ namespace BusinessLogic.IService
 {
     public interface IShulService
     {
-        public Task<int> SignIn(Shul shul);//, string FileName);
+        public Task<int> SignIn(Shul shul);
+        public Task UploadFile(int shulId, IFormFile userfile);
+        public Task SetMap(int shulId, string fileName);
+        public Task<Shul> GetShulById(int shulId);
 
     }
 }

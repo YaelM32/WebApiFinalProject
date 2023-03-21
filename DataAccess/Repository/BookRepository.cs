@@ -178,5 +178,20 @@ namespace DataAccess.Repository
                 throw new Exception("Error in GetEditions function " + ex.Message);
             }
         }
+
+        //public async Task AddAuthor(string authorName)
+        //{
+        //    dbContext.Authors.AddAsync(authorName);
+        //}
+
+        //public Task AddCategory(string categoryName)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Task AddEdition(string editionName)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
