@@ -1,6 +1,10 @@
 ﻿using DataAccess.DBModels;
 using DataAccess.IRepository;
+using ExcelDataReader;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +29,7 @@ namespace DataAccess.Repository
             try
             {
                 List<Book> books = new();
-                books = await dbContext.Books.Where(b=> b.ShulId== shulId).ToListAsync();
+                books = await dbContext.Books.Where(b => b.ShulId == shulId).ToListAsync();
                 return books;
             }
             catch (Exception ex)
@@ -36,9 +40,9 @@ namespace DataAccess.Repository
         public async Task<Author> GetAuthor(int? authorId, string? authorName)
         {
             try
-            { 
-                if(authorId!=null)
-                    return  await dbContext.Authors.Where(a => a.Id == authorId).FirstOrDefaultAsync();
+            {
+                if (authorId != null)
+                    return await dbContext.Authors.Where(a => a.Id == authorId).FirstOrDefaultAsync();
                 else if (authorName != null)
                     return await dbContext.Authors.Where(a => a.Name == authorName).FirstOrDefaultAsync();
                 return null;
@@ -52,14 +56,14 @@ namespace DataAccess.Repository
         {
             try
             {
-                if(categoryId!=null)
-                    return await dbContext.Categories.Where(b => b.Id==categoryId).FirstOrDefaultAsync();
-                else if(categoryName != null)
+                if (categoryId != null)
+                    return await dbContext.Categories.Where(b => b.Id == categoryId).FirstOrDefaultAsync();
+                else if (categoryName != null)
                 {
                     Category c = await dbContext.Categories.Where(b => b.Name == categoryName).FirstOrDefaultAsync();
                     return c;
                 }
-      
+
                 return null;
 
             }
@@ -73,7 +77,7 @@ namespace DataAccess.Repository
             try
             {
                 if (editionId != null)
-                    return await dbContext.Editions.Where(b => b.Id==editionId).FirstOrDefaultAsync();
+                    return await dbContext.Editions.Where(b => b.Id == editionId).FirstOrDefaultAsync();
                 else if (editionName != null)
                     return await dbContext.Editions.Where(b => b.Name == editionName).FirstOrDefaultAsync();
                 return null;
@@ -89,7 +93,7 @@ namespace DataAccess.Repository
         {
             try
             {
-                Book book = await dbContext.Books.FirstOrDefaultAsync(b=> b.Id== bookId);
+                Book book = await dbContext.Books.FirstOrDefaultAsync(b => b.Id == bookId);
                 if (book != null)
                 {
                     dbContext.Books.Remove(book);
@@ -147,7 +151,7 @@ namespace DataAccess.Repository
         {
             try
             {
-                    return dbContext.Categories.ToListAsync();   
+                return dbContext.Categories.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -179,19 +183,64 @@ namespace DataAccess.Repository
             }
         }
 
-        //public async Task AddAuthor(string authorName)
-        //{
-        //    dbContext.Authors.AddAsync(authorName);
-        //}
+        public async Task<Author> AddAuthor(Author author)
+        {
+            try
+            {
 
-        //public Task AddCategory(string categoryName)
-        //{
-        //    throw new NotImplementedException();
-        //}
+                if (author != null)
+                {
+                    dbContext.Authors.AddAsync(author);
+                    await dbContext.SaveChangesAsync();
+                }
+                return author;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GetEditions function " + ex.Message);
+            }
 
-        //public Task AddEdition(string editionName)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        }
+
+        public async Task<Category> AddCategory(Category category)
+        {
+            try
+            {
+
+                if (category != null)
+                {
+                    dbContext.Categories.AddAsync(category);
+                    await dbContext.SaveChangesAsync();
+                }
+                return category;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GetEditions function " + ex.Message);
+            }
+        }
+
+        public async Task<Edition> AddEdition(Edition edition)
+        {
+            try
+            {
+
+                if (edition != null)
+                {
+                    dbContext.Editions.AddAsync(edition);
+                    await dbContext.SaveChangesAsync();
+                }
+                return edition;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GetEditions function " + ex.Message);
+            }
+        }
+
+        public async Task UplaodExcel(IFormFile data)
+        {
+            
+        }
     }
 }

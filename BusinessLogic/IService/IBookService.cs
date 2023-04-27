@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Dto;
 using DataAccess.DBModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,10 @@ namespace BusinessLogic.IService
         public  Task<List<Category>> GetCategories();
         public  Task<List<Author>> GetAuthors();
         public  Task<List<Edition>> GetEditions();
-        //public Task AddAuthor(string authorName);
-        //public Task AddCategory( string categoryName);
-        //public Task AddEdition(string editionName);
+        public Task<Author> AddAuthor(Author author);
+        public Task<Category> AddCategory(Category categoryName);
+        public Task<Edition> AddEdition(Edition editionName);
+        public Task UplaodExcel(IFormFile file);
 
 
 

@@ -30,6 +30,10 @@ namespace BusinessLogic.Dto
             Edition = edition;
             PublishYear = publishYear;
             ShulId = shulId;
-        } 
+        }
+
+        public BookDto()
+        {
+        }
     }
 }

@@ -2,10 +2,12 @@
 using BusinessLogic.Dto;
 using BusinessLogic.IService;
 using DataAccess.DBModels;
+using ExcelDataReader;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Xml.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -70,18 +72,33 @@ namespace WebApiFinalProject.Controllers
         public async Task<Tuple<int, string>> GetAuthor([FromQuery] int? authorId,string? authorName)
         {
             Author a = await bookService.GetAuthor(authorId,authorName);
+            if (a == null)
+            {
+                AuthorDto authorDto = new() { Name = authorName };
+                a = AddAuthor(authorDto).Result;
+            }
             return new Tuple<int, string>(a.Id, a.Name);
         }
         [HttpGet("CategoryId")]
         public async Task<Tuple<int, string>> GetCategory([FromQuery] int? categoryId, string? categoryName)
         {
             Category c=await bookService.GetCategory(categoryId, categoryName);
+            if (c == null)
+            {
+                CategoryDto categoryDto = new() { Name = categoryName };
+                c = AddCategory(categoryDto).Result;
+            }
             return new Tuple<int, string>(c.Id, c.Name);
         }
         [HttpGet("EditionId")]
         public async Task<Tuple<int, string>> GetEdition([FromQuery] int? editionId, string? editionName)
         {
             Edition e= await bookService.GetEdition(editionId, editionName);
+            if (e == null)
+            {
+                EditionDto editionDto = new() { Name = editionName };
+                e = AddEdition(editionDto).Result;
+            }
             return new Tuple<int, string>(e.Id, e.Name);
         }
         // GET api/<BookController>/5
@@ -123,7 +140,7 @@ namespace WebApiFinalProject.Controllers
         [HttpPost, Route("AddNewBook")]
         public Task AddNewBook([FromBody] BookDto book)
         {  
-            BookDTO2 bDTO = new BookDTO2() {Name=book.Name, ChipId= book.ChipId, VolumeNum= book.VolumeNum, AuthorId= book.Author != "" ? GetAuthor(null, (string)book.Author).Result.Item1:6, CategoryId= book.Category != "" ? GetCategory(null, (string)book.Category).Result.Item1:6, EditionId = book.Edition != "" ? GetEdition(null, (string)book.Edition).Result.Item1:6, PublishYear=book.PublishYear, ShulId= book.ShulId };
+            BookDTO2 bDTO = new BookDTO2() {Name=book.Name, ChipId= book.ChipId, VolumeNum= book.VolumeNum, AuthorId= book.Author != "" ? GetAuthor(null, (string)book.Author).Result.Item1:6, CategoryId= book.Category != "" ? GetCategory(null, (string)book.Category).Result.Item1:5, EditionId = book.Edition != "" ? GetEdition(null, (string)book.Edition).Result.Item1:3, PublishYear=book.PublishYear, ShulId= book.ShulId };
             Book b = mapper.Map<Book>(bDTO);
             return bookService.AddNewBook(b);
         }
@@ -167,20 +184,68 @@ namespace WebApiFinalProject.Controllers
             List<EditionDto> e = mapper.Map<List<EditionDto>>(l);
             return e;
         }
-        //[HttpPost("AddAuthor")]
-        //public async Task AddAuthor([FromQuery]string authorName)
-        //{
-        //    return bookService.AddAuthor(authorName);
-        //}
-        //[HttpPost("AddCategory")]
-        //public async Task AddCategory([FromQuery] string categoryName)
-        //{
-        //    return bookService.AddCategory(categoryName);
-        //}
-        //[HttpPost("AddEdition")]
-        //public async Task AddEdition([FromQuery]string editionName)
-        //{
-        //    return bookService.AddEdition(editionName);
-        //}
+        [HttpPost("AddAuthor")]
+        public Task<Author> AddAuthor([FromQuery] AuthorDto author)
+        {
+            Author a = mapper.Map<Author>(author);
+            return bookService.AddAuthor(a);
+        }
+        [HttpPost("AddCategory")]
+        public Task<Category> AddCategory([FromQuery] CategoryDto category)
+        {
+            Category c = mapper.Map<Category>(category);
+            return bookService.AddCategory(c);
+        }
+        [HttpPost("AddEdition")]
+        public Task<Edition> AddEdition([FromBody] EditionDto edition)
+        {
+            Edition e = mapper.Map<Edition>(edition);
+            return bookService.AddEdition(e);
+        }
+        [HttpPost("UplaodExcel")]
+        public async Task UplaodExcel( [FromQuery] int shulId,IFormFile data)
+        {
+            BookDto b = new();
+            try
+            {
+                if (data == null || data.Length <= 0)
+                {
+                    throw new Exception();
+                }
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                using var stream = data.OpenReadStream();
+                using var reader = ExcelReaderFactory.CreateReader(stream);
+                int sheetCount = 1;
+                do
+                {
+                    while (reader.Read())
+                    {
+                        if (sheetCount != 1)
+                        {
+                            b.Name = reader.GetValue(0).ToString();
+                            b.Author= reader.GetValue(1).ToString();
+                            b.Category = reader.GetValue(2).ToString();
+                            b.Edition = reader.GetValue(3).ToString();
+                            var strPublishYear = reader.GetValue(4).ToString();
+                            b.PublishYear = Int32.Parse(strPublishYear);
+                            var strVolumeNum = reader.GetValue(5).ToString();
+                            b.VolumeNum = Int32.Parse(strVolumeNum);
+                            b.ShulId = shulId;
+                            b.ChipId = 0;
+                            await AddNewBook(b);
+                        }
+
+                        sheetCount++;
+                    }
+
+
+
+                } while (reader.NextResult());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in GetEditions function " + ex.Message);
+            }
+        }
     }
 }

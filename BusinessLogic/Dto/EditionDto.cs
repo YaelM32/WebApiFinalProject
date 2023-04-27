@@ -8,7 +8,6 @@ namespace BusinessLogic.Dto
 {
     public class EditionDto
     {
-        public int Id { get; set; }
         public string Name { get; set; } = null!;
     }
 }
