@@ -103,8 +103,6 @@ namespace DataAccess.Repository
         }
         public async Task getEmail(string email)
         {
-            //string url = "http://localhost:3000/newPassword/"+email;
-            //url=UrlEncoder.Default.Encode(url);
             using (SmtpClient client = new SmtpClient()
             {
                 Host = "smtp.office365.com",
@@ -122,7 +120,7 @@ namespace DataAccess.Repository
                     From = new MailAddress("36325565166@mby.co.il"), // sender must be a full email address
                     Subject = "איפוס סיסמא",
                     IsBodyHtml = true,
-                    Body = "http://localhost:3000/newPassword/" + Base64Encode(email),//"http://localhost:3000/newPassword/"+email ,
+                    Body = "http://localhost:3000/newPassword/" + Base64Encode(email),
                     BodyEncoding = System.Text.Encoding.UTF8,
                     SubjectEncoding = System.Text.Encoding.UTF8,
 

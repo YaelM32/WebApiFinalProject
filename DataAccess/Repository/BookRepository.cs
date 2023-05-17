@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -121,6 +122,8 @@ namespace DataAccess.Repository
                     book.AuthorId = b.AuthorId;
                     book.ChipId = b.ChipId;
                     book.EditionId = b.EditionId;
+                    book.Copies = b.Copies;
+                    book.Description = b.Description;
                     dbContext.Books.Update(book);
                     await dbContext.SaveChangesAsync();
                 }
@@ -241,6 +244,91 @@ namespace DataAccess.Repository
         public async Task UplaodExcel(IFormFile data)
         {
             
+        }
+
+        public async Task DeleteAuthor(int id)
+        {
+            try
+            {
+                IList<Book> bookList = dbContext.Books.ToList();
+
+                foreach (Book item in bookList)
+                {
+                    if (item.AuthorId == id)
+                    {
+                        item.AuthorId = 6;
+                        dbContext.Books.Update(item);
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+
+                Author author = await dbContext.Authors.FirstOrDefaultAsync(b => b.Id == id);
+                if (author != null)
+                {
+                    dbContext.Authors.Remove(author);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in DeleteAuthor function " + ex.Message);
+            }
+        }
+
+        public async Task DeleteCategory(int id)
+        {
+            try
+            {
+                IList<Book> bookList = dbContext.Books.ToList();
+
+                foreach (Book item in bookList)
+                {
+                    if (item.CategoryId == id)
+                    {
+                        item.CategoryId = 5;
+                        dbContext.Books.Update(item);
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+                Category category = await dbContext.Categories.FindAsync(id);
+                if (category != null)
+                {
+                    dbContext.Categories.Remove(category);
+                    dbContext.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in DeleteAuthor function " + ex.Message);
+            }
+        }
+
+        public async Task DeleteEdition(int id)
+        {
+            try
+            {
+                IList<Book> bookList = dbContext.Books.ToList();
+
+                foreach (Book item in bookList)
+                {
+                    if (item.EditionId == id)
+                    {
+                        item.EditionId = 3;
+                        dbContext.Books.Update(item);
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+                Edition edition = await dbContext.Editions.FirstOrDefaultAsync(b => b.Id == id);
+                if (edition != null)
+                {
+                    dbContext.Editions.Remove(edition);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in DeleteAuthor function " + ex.Message);
+            }
         }
     }
 }

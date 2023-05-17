@@ -29,7 +29,10 @@ namespace BusinessLogic.Service
         {
             return shulRepository.SetMap(shulId,fileName);
         }
-
+        public Task SetLogo(int shulId, string fileName)
+        {
+            return shulRepository.SetLogo(shulId, fileName);
+        }
         public Task<int> SignIn(Shul shul)//, string FileName)
         {
             return shulRepository.SignIn(shul);//,  FileName);

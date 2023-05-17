@@ -50,6 +50,8 @@ namespace DataAccess.DBModels
 
                 entity.Property(e => e.ChipId).HasColumnName("Chip_id");
 
+                entity.Property(e => e.Description).HasMaxLength(1000);
+
                 entity.Property(e => e.EditionId).HasColumnName("Edition_id");
 
                 entity.Property(e => e.Name).HasMaxLength(300);
@@ -104,6 +106,8 @@ namespace DataAccess.DBModels
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Address).HasMaxLength(400);
+
+                entity.Property(e => e.Logo).HasMaxLength(300);
 
                 entity.Property(e => e.Map).HasMaxLength(300);
 

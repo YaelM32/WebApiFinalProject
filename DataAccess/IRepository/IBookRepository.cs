@@ -25,6 +25,9 @@ namespace DataAccess.IRepository
         public Task<Edition> AddEdition(Edition edition);
         public Task UplaodExcel(IFormFile file);
 
+        public Task DeleteAuthor(int id);
+        public Task DeleteCategory(int id);
+        public Task DeleteEdition(int id);
 
     }
 }

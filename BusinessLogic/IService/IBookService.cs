@@ -27,8 +27,9 @@ namespace BusinessLogic.IService
         public Task<Edition> AddEdition(Edition editionName);
         public Task UplaodExcel(IFormFile file);
 
-
-
+        public Task DeleteAuthor(int id); 
+        public Task DeleteCategory(int id);
+        public Task DeleteEdition(int id);
 
     }
 }

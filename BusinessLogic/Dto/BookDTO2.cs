@@ -16,8 +16,10 @@ namespace BusinessLogic.Dto
         public int? EditionId { get; set; }
         public int? PublishYear { get; set; }
         public int ShulId { get; set; }
+        public int? Copies { get; set; }
+        public string? Description { get; set; }
 
-        public BookDTO2(string name, int chipId, int volumeNum, int? authorId, int? categoryId, int? editionId, int? publishYear, int shulId)
+        public BookDTO2(string name, int chipId, int volumeNum, int? authorId, int? categoryId, int? editionId, int? publishYear, int shulId, int? copies, string? description)
         {
             Name = name;
             ChipId = chipId;
@@ -27,6 +29,8 @@ namespace BusinessLogic.Dto
             EditionId = editionId;
             PublishYear = publishYear;
             ShulId = shulId;
+            Copies = copies;
+            Description = description;
         }
 
         public BookDTO2()

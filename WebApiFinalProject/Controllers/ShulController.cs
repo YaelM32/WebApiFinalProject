@@ -22,28 +22,21 @@ namespace WebApiFinalProject.Controllers
             shulService = _shulService;
             mapper = _mapper;
         }
-
-        // GET: api/<ShulController>
-
-
-        // POST api/<ShulController>
         [HttpPost("SignIn")]
         public Task<int> SignIn([FromBody] ShulDto shulDto)
         {
-           // string saveFilePath = Path.Combine("M:\\Final Project\\WebApiFinalProject\\WebApiFinalProject\\wwwroot\\images", shulDto.Name);
-           
             Shul shul = mapper.Map<Shul>(shulDto);
             return shulService.SignIn(shul);
         }
 
 
         [HttpPost, Route("UploadImage")]
-        public async Task UploadFile(int shulId,IFormFile userfile)
+        public async Task UploadFile(int shulId, IFormFile userfile)
         {
 
             try
             {
-               shulService.UploadFile(shulId, userfile);
+                shulService.UploadFile(shulId, userfile);
             }
             catch (Exception ex)
             {
@@ -51,24 +44,57 @@ namespace WebApiFinalProject.Controllers
             }
             try
             {
-                string filename = userfile.FileName;
-                filename = Path.GetFileName(filename);
-                string uploadFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", filename);
-                await using var stream = new FileStream(uploadFilePath, FileMode.Create);
-                await userfile.CopyToAsync(stream);
+                await SaveFileName(userfile);
                 SetMap(shulId, userfile.FileName);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            
+
+        }
+        [HttpGet, Route("SaveFileName")]
+
+        public async Task SaveFileName(IFormFile userfile)
+        {
+            string filename = userfile.FileName;
+            filename = Path.GetFileName(filename);
+            string uploadFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", filename);
+            await using var stream = new FileStream(uploadFilePath, FileMode.Create);
+            await userfile.CopyToAsync(stream);
+        }
+        [HttpPost, Route("UploadLogo")]
+        public async Task UploadLogo(int shulId, IFormFile logo)
+        {
+            try
+            {
+                shulService.UploadFile(shulId, logo);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            try
+            {
+                await SaveFileName(logo);
+                SetLogo(shulId, logo.FileName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
         [HttpPut("SetMap")]
 
         public Task SetMap(int shulId, string Filename)
         {
             return shulService.SetMap(shulId, Filename);
+        }
+        [HttpPut("SetLogo")]
+
+        public Task SetLogo(int shulId, string Filename)
+        {
+            return shulService.SetLogo(shulId, Filename);
         }
 
         [HttpGet("GetShulById")]
@@ -79,7 +105,7 @@ namespace WebApiFinalProject.Controllers
         }
 
     }
-    }
+}
 
 
 

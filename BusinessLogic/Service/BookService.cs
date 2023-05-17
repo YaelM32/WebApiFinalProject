@@ -93,5 +93,20 @@ namespace BusinessLogic.Service
         {
             return bookRepository.UplaodExcel(file);
         }
+
+        public Task DeleteAuthor(int id)
+        {
+            return bookRepository.DeleteAuthor(id);
+        }
+
+        public Task DeleteCategory(int id)
+        {
+            return bookRepository.DeleteCategory(id);
+        }
+
+        public Task DeleteEdition(int id)
+        {
+            return bookRepository.DeleteEdition(id);
+        }
     }
 }

@@ -44,6 +44,25 @@ namespace DataAccess.Repository
                 throw new Exception("Error in SetMap function " + ex.Message);
             }
         }
+        public async Task SetLogo(int shulId, string fileName)
+        {
+            try
+            {
+                Shul s = dbContext.Shuls.Find(shulId);
+                if (s != null)
+                {
+                    s.Logo = fileName;
+                    dbContext.Shuls.Update(s);
+                    await dbContext.SaveChangesAsync();
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                throw new Exception("Error in SetMap function " + ex.Message);
+            }
+        }
 
         public async Task<int> SignIn(Shul shul)//,string FileName)
         {

@@ -14,26 +14,9 @@ namespace DataAccess.DBModels
         public int? EditionId { get; set; }
         public int? PublishYear { get; set; }
         public int ShulId { get; set; }
+        public int? Copies { get; set; }
+        public string? Description { get; set; }
 
-        public Book(int id, string name, int chipId, int volumeNum, int? authorId, int? categoryId, int? editionId, int? publishYear, int shulId, Author? author, Category? category, Edition? edition)
-        {
-            Id = id;
-            Name = name;
-            ChipId = chipId;
-            VolumeNum = volumeNum;
-            AuthorId = authorId;
-            CategoryId = categoryId;
-            EditionId = editionId;
-            PublishYear = publishYear;
-            ShulId = shulId;
-            Author = author;
-            Category = category;
-            Edition = edition;
-        }
-        public Book()
-        {
-
-        }
         public virtual Author? Author { get; set; }
         public virtual Category? Category { get; set; }
         public virtual Edition? Edition { get; set; }
