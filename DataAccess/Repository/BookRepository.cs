@@ -243,7 +243,7 @@ namespace DataAccess.Repository
 
         public async Task UplaodExcel(IFormFile data)
         {
-            
+
         }
 
         public async Task DeleteAuthor(int id)
@@ -330,5 +330,96 @@ namespace DataAccess.Repository
                 throw new Exception("Error in DeleteAuthor function " + ex.Message);
             }
         }
+
+        public async Task UpdateAuthor(int authorId, string author)
+        {
+            try
+            {
+                IList<Book> bookList = dbContext.Books.ToList();
+
+                foreach (Book item in bookList)
+                {
+                    if (item.AuthorId == authorId)
+                    {
+                        item.Author.Name = author;
+                        dbContext.Books.Update(item);
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+
+                Author myAuthor = await dbContext.Authors.FirstOrDefaultAsync(a => a.Id == authorId);
+                if (myAuthor != null)
+                {
+                    myAuthor.Name = author;
+                    dbContext.Authors.Update(myAuthor);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in UpdateAuthor function " + ex.Message);
+            }
+        }
+
+        public async Task UpdateEdition(int editionId, string newEdition)
+        {
+            try
+            {
+                IList<Book> bookList = dbContext.Books.ToList();
+
+                foreach (Book item in bookList)
+                {
+                    if (item.EditionId == editionId)
+                    {
+                        item.Edition.Name = newEdition;
+                        dbContext.Books.Update(item);
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+
+                Edition myEdition = await dbContext.Editions.FirstOrDefaultAsync(a => a.Id == editionId);
+                if (myEdition != null)
+                {
+                    myEdition.Name = newEdition;
+                    dbContext.Editions.Update(myEdition);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in UpdateAuthor function " + ex.Message);
+            }
+        }
+
+        public async Task UpdateCategory(int categoryId, string newCategory)
+        {
+            try
+            {
+                IList<Book> bookList = dbContext.Books.ToList();
+
+                foreach (Book item in bookList)
+                {
+                    if (item.CategoryId == categoryId)
+                    {
+                        item.Category.Name = newCategory;
+                        dbContext.Books.Update(item);
+                        await dbContext.SaveChangesAsync();
+                    }
+                }
+
+                Category myCategory = await dbContext.Categories.FirstOrDefaultAsync(a => a.Id == categoryId);
+                if (myCategory != null)
+                {
+                    myCategory.Name = newCategory;
+                    dbContext.Categories.Update(myCategory);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in UpdateAuthor function " + ex.Message);
+            }
+        }
+
     }
 }

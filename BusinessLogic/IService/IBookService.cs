@@ -31,5 +31,11 @@ namespace BusinessLogic.IService
         public Task DeleteCategory(int id);
         public Task DeleteEdition(int id);
 
+        public Task UpdateAuthor(int authorId, string newAuthor);
+        public Task UpdateEdition(int editionId, string newEdition);
+        public Task UpdateCategory(int categoryId, string newCategory);
+
+
+
     }
 }

@@ -15,7 +15,6 @@ using System.Xml.Linq;
 namespace WebApiFinalProject.Controllers
 {
 
-
     public class BookControllerSingleton : ControllerBase
     {
         public List<BookDto> books;
@@ -51,14 +50,17 @@ namespace WebApiFinalProject.Controllers
 
         public string author { get; set; }
 
-        // GET: api/<BookController>
+
+        ////////////////  Books functions  ///////////////////
+        #region
+    
+        
         [HttpGet("ShulId")]
         public async Task<List<BookDto>> GetBooksByShul([FromQuery] int shulId)
         {
             b.books = new();
             List<Book> l = new();
             l = await bookService.GetBooksByShul(shulId);
-            // b.books = mapper.Map<List<BookDto>>(l);
             foreach (var item in l)
             {
                 BookDto a = new BookDto(item.Id,item.Name, item.ChipId, item.VolumeNum, GetAuthor((int)item.AuthorId,null).Result.Item2, GetCategory((int)item.CategoryId,null).Result.Item2,GetEdition((int)item.EditionId,null).Result.Item2, item.PublishYear,item.ShulId,item.Copies,item.Description);
@@ -66,43 +68,8 @@ namespace WebApiFinalProject.Controllers
     
             }
             return b.books;
-        }
-        // GET: api/<BookController>
-        [HttpGet("AuthorId")]
-        public async Task<Tuple<int, string>> GetAuthor([FromQuery] int? authorId,string? authorName)
-        {
-            Author a = await bookService.GetAuthor(authorId,authorName);
-            if (a == null)
-            {
-                AuthorDto authorDto = new() { Name = authorName };
-                a = AddAuthor(authorDto).Result;
-            }
-            return new Tuple<int, string>(a.Id, a.Name);
-        }
-        [HttpGet("CategoryId")]
-        public async Task<Tuple<int, string>> GetCategory([FromQuery] int? categoryId, string? categoryName)
-        {
-            Category c=await bookService.GetCategory(categoryId, categoryName);
-            if (c == null)
-            {
-                CategoryDto categoryDto = new() { Name = categoryName };
-                c = AddCategory(categoryDto).Result;
-            }
-            return new Tuple<int, string>(c.Id, c.Name);
-        }
-        [HttpGet("EditionId")]
-        public async Task<Tuple<int, string>> GetEdition([FromQuery] int? editionId, string? editionName)
-        {
-            Edition e= await bookService.GetEdition(editionId, editionName);
-            if (e == null)
-            {
-                EditionDto editionDto = new() { Name = editionName };
-                e = AddEdition(editionDto).Result;
-            }
-            return new Tuple<int, string>(e.Id, e.Name);
-        }
-        // GET api/<BookController>/5
-        [HttpGet, Route("GetBooksByShulByName")]
+        }   
+        [HttpGet, Route("GetBooksByShulByName")]  
         public async Task<List<BookDto>> GetBooksByShulByName(string name)
         {
             return b.books.Where(b => b.Name.Contains(name)).ToList();
@@ -136,7 +103,6 @@ namespace WebApiFinalProject.Controllers
             return books;
         }
 
-        // POST api/<BookController>
         [HttpPost, Route("AddNewBook")]
         public Task AddNewBook([FromBody] BookDto book)
         {  
@@ -145,7 +111,6 @@ namespace WebApiFinalProject.Controllers
             return bookService.AddNewBook(b);
         }
 
-        // PUT api/<BookController>/5
         [HttpPut, Route("UpdateBook")]
         public Task UpdateBook(int bookId, [FromBody] BookDto book)
         {
@@ -154,72 +119,12 @@ namespace WebApiFinalProject.Controllers
             return bookService.UpdateBook(bookId, b);
         }
 
-        // DELETE api/<BookController>/5
         [HttpDelete, Route("DeleteBook")]
         public Task DeleteBook(int BookId)
         {
             return bookService.DeleteBook(BookId);
         }
-        [HttpGet, Route("GetCategories")]
-        public async Task<List<CategoryDto>> GetCategories()
-        {
-            List<Category> l = new();
-            l = await bookService.GetCategories();
-            List<CategoryDto>  c = mapper.Map<List<CategoryDto>>(l);
-            return c;
-        }
-        [HttpGet, Route("GetAuthors")]
-        public async Task<List<AuthorDto>> GetAuthors()
-        {
-            List<Author> l = new();
-            l = await bookService.GetAuthors();
-            List<AuthorDto> a = mapper.Map<List<AuthorDto>>(l);
-            return a;
-        }
-        [HttpGet, Route("GetEditions")]
-        public async Task<List<EditionDto>> GetEditions()
-        {
-            List<Edition> l = new();
-            l = await bookService.GetEditions();
-            List<EditionDto> e = mapper.Map<List<EditionDto>>(l);
-            return e;
-        }
-        [HttpDelete, Route("DeleteAuthor")]
-        public Task DeleteAuthor(string author)
-        {
-           int authorId= GetAuthor(null,author).Result.Item1;
-            return bookService.DeleteAuthor(authorId);
-        }
-        [HttpDelete, Route("DeleteCategory")]
-        public Task DeleteCategory(string category)
-        {
-            int categoryId = GetCategory(null, category).Result.Item1;
-            return bookService.DeleteCategory(categoryId);
-        }
-        [HttpDelete, Route("DeleteEdition")]
-        public Task DeleteEdition(string edition)
-        {
-            int editionId = GetEdition(null, edition).Result.Item1;
-            return bookService.DeleteEdition(editionId);
-        }
-        [HttpPost("AddAuthor")]
-        public Task<Author> AddAuthor([FromQuery] AuthorDto author)
-        {
-            Author a = mapper.Map<Author>(author);
-            return bookService.AddAuthor(a);
-        }
-        [HttpPost("AddCategory")]
-        public Task<Category> AddCategory([FromQuery] CategoryDto category)
-        {
-            Category c = mapper.Map<Category>(category);
-            return bookService.AddCategory(c);
-        }
-        [HttpPost("AddEdition")]
-        public Task<Edition> AddEdition([FromBody] EditionDto edition)
-        {
-            Edition e = mapper.Map<Edition>(edition);
-            return bookService.AddEdition(e);
-        }
+      
         [HttpPost("UplaodExcel")]
         public async Task UplaodExcel( [FromQuery] int shulId,IFormFile data)
         {
@@ -267,5 +172,132 @@ namespace WebApiFinalProject.Controllers
                 throw new Exception("Error in GetEditions function " + ex.Message);
             }
         }
+
+        #endregion
+        ////////////////  Authors functions  /////////////////
+        #region
+        [HttpGet("AuthorId")]
+        public async Task<Tuple<int, string>> GetAuthor([FromQuery] int? authorId, string? authorName)
+        {
+            Author a = await bookService.GetAuthor(authorId, authorName);
+            if (a == null)
+            {
+                AuthorDto authorDto = new() { Name = authorName };
+                a = AddAuthor(authorDto).Result;
+            }
+            return new Tuple<int, string>(a.Id, a.Name);
+        }
+        [HttpGet, Route("GetAuthors")]
+        public async Task<List<AuthorDto>> GetAuthors()
+        {
+            List<Author> l = new();
+            l = await bookService.GetAuthors();
+            List<AuthorDto> a = mapper.Map<List<AuthorDto>>(l);
+            return a;
+        }
+        [HttpPost("AddAuthor")]
+        public Task<Author> AddAuthor([FromQuery] AuthorDto author)
+        {
+            Author a = mapper.Map<Author>(author);
+            return bookService.AddAuthor(a);
+        }
+        [HttpDelete, Route("DeleteAuthor")]
+        public Task DeleteAuthor(string author)
+        {
+            int authorId = GetAuthor(null, author).Result.Item1;
+
+
+            return bookService.DeleteAuthor(authorId);
+        }
+        [HttpPut, Route("UpdateAuthor")]
+        public Task UpdateAuthor(string author, string newAuthor)
+        {
+            int authorId = GetAuthor(null, author).Result.Item1;
+            return bookService.UpdateAuthor(authorId, newAuthor);
+        }
+        #endregion
+        ////////////////  Categories functions  ///////////////
+        #region
+        [HttpGet("CategoryIdOrName")]
+        public async Task<Tuple<int, string>> GetCategory([FromQuery] int? categoryId, string? categoryName)
+        {
+            Category c = await bookService.GetCategory(categoryId, categoryName);
+            if (c == null)
+            {
+                CategoryDto categoryDto = new() { Name = categoryName };
+                c = AddCategory(categoryDto).Result;
+            }
+            return new Tuple<int, string>(c.Id, c.Name);
+        }
+        [HttpGet, Route("GetCategories")]
+        public async Task<List<CategoryDto>> GetCategories()
+        {
+            List<Category> l = new();
+            l = await bookService.GetCategories();
+            List<CategoryDto> c = mapper.Map<List<CategoryDto>>(l);
+            return c;
+        }
+        [HttpPost("AddCategory")]
+        public Task<Category> AddCategory([FromQuery] CategoryDto category)
+        {
+            Category c = mapper.Map<Category>(category);
+            return bookService.AddCategory(c);
+        }
+        [HttpDelete, Route("DeleteCategory")]
+        public Task DeleteCategory(string category)
+        {
+            int categoryId = GetCategory(null, category).Result.Item1;
+            return bookService.DeleteCategory(categoryId);
+        }
+
+        [HttpPut, Route("UpdateCategory")]
+        public Task UpdateCategory(string category, string newCategory)
+        {
+            int categoryId = GetCategory(null, category).Result.Item1;
+            return bookService.UpdateCategory(categoryId, newCategory);
+        }
+        #endregion
+        ////////////////  Editions functions  ////////////////
+        #region
+        [HttpGet("EditionId")]
+        public async Task<Tuple<int, string>> GetEdition([FromQuery] int? editionId, string? editionName)
+        {
+            Edition e = await bookService.GetEdition(editionId, editionName);
+            if (e == null)
+            {
+                EditionDto editionDto = new() { Name = editionName };
+                e = AddEdition(editionDto).Result;
+            }
+            return new Tuple<int, string>(e.Id, e.Name);
+        }
+        [HttpGet, Route("GetEditions")]
+        public async Task<List<EditionDto>> GetEditions()
+        {
+            List<Edition> l = new();
+            l = await bookService.GetEditions();
+            List<EditionDto> e = mapper.Map<List<EditionDto>>(l);
+            return e;
+        }
+
+        [HttpDelete, Route("DeleteEdition")]
+        public Task DeleteEdition(string edition)
+        {
+            int editionId = GetEdition(null, edition).Result.Item1;
+            return bookService.DeleteEdition(editionId);
+        }
+        [HttpPost("AddEdition")]
+        public Task<Edition> AddEdition([FromQuery] EditionDto edition)
+        {
+            Edition e = mapper.Map<Edition>(edition);
+            return bookService.AddEdition(e);
+        }
+        [HttpPut, Route("UpdateEdition")]
+        public Task UpdateEdition(string edition, string newEdition)
+        {
+            int editionId = GetEdition(null, edition).Result.Item1;
+            return bookService.UpdateEdition(editionId, newEdition);
+        }
+        #endregion
+
     }
 }

@@ -108,5 +108,20 @@ namespace BusinessLogic.Service
         {
             return bookRepository.DeleteEdition(id);
         }
+
+        public Task UpdateAuthor(int authorId, string newAuthor)
+        {
+            return bookRepository.UpdateAuthor(authorId, newAuthor);
+        }
+
+        public Task UpdateEdition(int editionId, string newEdition)
+        {
+            return bookRepository.UpdateEdition(editionId, newEdition);
+        }
+
+        public Task UpdateCategory(int categoryId, string newCategory)
+        {
+            return bookRepository.UpdateCategory(categoryId, newCategory);
+        }
     }
 }
