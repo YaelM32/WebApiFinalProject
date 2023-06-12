@@ -16,6 +16,7 @@ namespace DataAccess.DBModels
         public int ShulId { get; set; }
         public int? Copies { get; set; }
         public string? Description { get; set; }
+        public string? BookImg { get; set; }
 
         public virtual Author? Author { get; set; }
         public virtual Category? Category { get; set; }

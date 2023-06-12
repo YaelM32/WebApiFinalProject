@@ -124,6 +124,7 @@ namespace DataAccess.Repository
                     book.EditionId = b.EditionId;
                     book.Copies = b.Copies;
                     book.Description = b.Description;
+                    book.BookImg = b.BookImg;
                     dbContext.Books.Update(book);
                     await dbContext.SaveChangesAsync();
                 }

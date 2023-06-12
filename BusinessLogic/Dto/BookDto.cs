@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,8 +21,8 @@ namespace BusinessLogic.Dto
         public int ShulId { get; set; }
         public int? Copies { get; set; }
         public string? Description { get; set; }
-
-        public BookDto(int id,string name, int chipId, int volumeNum, string? author, string? category, string? edition, int? publishYear, int shulId,int? copies, string? description)
+        public string? BookImgName { get; set; }
+        public BookDto(int id,string name, int chipId, int volumeNum, string? author, string? category, string? edition, int? publishYear, int shulId,int? copies, string? description, string? bookImgName)
         {
             Id = id;
             Name = name;
@@ -34,6 +35,7 @@ namespace BusinessLogic.Dto
             ShulId = shulId;
             Copies = copies;
             Description = description;
+            BookImgName = bookImgName;
         }
 
         public BookDto()

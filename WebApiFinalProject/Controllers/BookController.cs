@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using BusinessLogic.Dto;
 using BusinessLogic.IService;
+using BusinessLogic.Service;
 using DataAccess.DBModels;
 using ExcelDataReader;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,12 +41,14 @@ namespace WebApiFinalProject.Controllers
     public class BookController : ControllerBase
     {
         IBookService bookService;
+        IUploadImageService uploadImageService;
         IMapper mapper;
         BookControllerSingleton b;
-        public BookController(IBookService _bookService, IMapper _mapper)
+        public BookController(IBookService _bookService, IMapper _mapper,IUploadImageService _uploadImageService)
         {
             b = BookControllerSingleton.instance();
             bookService = _bookService;
+            uploadImageService = _uploadImageService;
             mapper = _mapper;
         }
 
@@ -53,8 +57,8 @@ namespace WebApiFinalProject.Controllers
 
         ////////////////  Books functions  ///////////////////
         #region
-    
-        
+
+
         [HttpGet("ShulId")]
         public async Task<List<BookDto>> GetBooksByShul([FromQuery] int shulId)
         {
@@ -63,12 +67,12 @@ namespace WebApiFinalProject.Controllers
             l = await bookService.GetBooksByShul(shulId);
             foreach (var item in l)
             {
-                BookDto a = new BookDto(item.Id,item.Name, item.ChipId, item.VolumeNum, GetAuthor((int)item.AuthorId,null).Result.Item2, GetCategory((int)item.CategoryId,null).Result.Item2,GetEdition((int)item.EditionId,null).Result.Item2, item.PublishYear,item.ShulId,item.Copies,item.Description);
-                b.books.Add(a); 
-    
+                BookDto a = new BookDto(item.Id, item.Name, item.ChipId, item.VolumeNum, GetAuthor((int)item.AuthorId, null).Result.Item2, GetCategory((int)item.CategoryId, null).Result.Item2, GetEdition((int)item.EditionId, null).Result.Item2, item.PublishYear, item.ShulId, item.Copies, item.Description, item.BookImg);
+                b.books.Add(a);
+
             }
             return b.books;
-        }   
+        }
         [HttpGet, Route("GetBooksByShulByName")]  
         public async Task<List<BookDto>> GetBooksByShulByName(string name)
         {
@@ -104,18 +108,21 @@ namespace WebApiFinalProject.Controllers
         }
 
         [HttpPost, Route("AddNewBook")]
-        public Task AddNewBook([FromBody] BookDto book)
-        {  
-            BookDTO2 bDTO = new BookDTO2() {Name=book.Name, ChipId= book.ChipId, VolumeNum= book.VolumeNum, AuthorId= book.Author != "" ? GetAuthor(null, (string)book.Author).Result.Item1:6, CategoryId= book.Category != "" ? GetCategory(null, (string)book.Category).Result.Item1:5, EditionId = book.Edition != "" ? GetEdition(null, (string)book.Edition).Result.Item1:3, PublishYear=book.PublishYear, ShulId= book.ShulId, Copies=book.Copies, Description=book.Description };
+        public Task AddNewBook(BookDTOWithImage data)
+        {
+            BookDTOInt bDTO = new BookDTOInt() { Name = data.Book.Name, ChipId = data.Book.ChipId, VolumeNum = data.Book.VolumeNum, AuthorId = data.Book.Author != "" ? GetAuthor(null, (string)data.Book.Author).Result.Item1 : 6, CategoryId = data.Book.Category != "" ? GetCategory(null, (string)data.Book.Category).Result.Item1 : 5, EditionId = data.Book.Edition != "" ? GetEdition(null, (string)data.Book.Edition).Result.Item1 : 3, PublishYear = data.Book.PublishYear, ShulId = data.Book.ShulId, Copies = data.Book.Copies, Description = data.Book.Description, BookImg = data.BookImg!=null?uploadImageService.SaveBookImg(data.BookImg).Result: ""};
             Book b = mapper.Map<Book>(bDTO);
+            //b.BookImg = SaveBookImgName(book.BookImg).Result;
             return bookService.AddNewBook(b);
         }
 
         [HttpPut, Route("UpdateBook")]
-        public Task UpdateBook(int bookId, [FromBody] BookDto book)
+        public Task UpdateBook(int bookId, [FromBody] BookDto book, IFormFile bookImg)
         {
-            BookDTO2 bDTO = new BookDTO2() { Name = book.Name, ChipId = book.ChipId, VolumeNum = book.VolumeNum, AuthorId = GetAuthor(null, (string)book.Author).Result.Item1, CategoryId =  GetCategory(null, (string)book.Category).Result.Item1, EditionId = GetEdition(null, (string)book.Edition).Result.Item1, PublishYear = book.PublishYear, ShulId = book.ShulId, Copies = book.Copies, Description = book.Description };
+            BookDTOInt bDTO = new BookDTOInt() { Name = book.Name, ChipId = book.ChipId, VolumeNum = book.VolumeNum, AuthorId = GetAuthor(null, (string)book.Author).Result.Item1, CategoryId =  GetCategory(null, (string)book.Category).Result.Item1, EditionId = GetEdition(null, (string)book.Edition).Result.Item1, PublishYear = book.PublishYear, ShulId = book.ShulId, Copies = book.Copies, Description = book.Description, BookImg = uploadImageService.SaveBookImg(bookImg).Result };        
             Book b = mapper.Map<Book>(bDTO);
+            //b.BookImg = SaveBookImgName(book.BookImg).Result;
+
             return bookService.UpdateBook(bookId, b);
         }
 
@@ -158,7 +165,8 @@ namespace WebApiFinalProject.Controllers
                             b.Description = reader.GetValue(5).ToString();
                             b.ShulId = shulId;
                             b.ChipId = 0;
-                            await AddNewBook(b);
+                            BookDTOWithImage book = new BookDTOWithImage { Book = b, BookImg = null };
+                            await AddNewBook(book);
                         }
                         sheetCount++;
                     }
@@ -172,6 +180,8 @@ namespace WebApiFinalProject.Controllers
                 throw new Exception("Error in GetEditions function " + ex.Message);
             }
         }
+
+
 
         #endregion
         ////////////////  Authors functions  /////////////////

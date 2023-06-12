@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace BusinessLogic.Dto
 {
-    public class BookDTO2
+    public class BookDTOInt
     {
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public int ChipId { get; set; }
         public int VolumeNum { get; set; }
@@ -18,8 +19,9 @@ namespace BusinessLogic.Dto
         public int ShulId { get; set; }
         public int? Copies { get; set; }
         public string? Description { get; set; }
+        public string? BookImg { get; set; }
 
-        public BookDTO2(string name, int chipId, int volumeNum, int? authorId, int? categoryId, int? editionId, int? publishYear, int shulId, int? copies, string? description)
+        public BookDTOInt(string name, int chipId, int volumeNum, int? authorId, int? categoryId, int? editionId, int? publishYear, int shulId, int? copies, string? description, string? bookImg)
         {
             Name = name;
             ChipId = chipId;
@@ -31,9 +33,10 @@ namespace BusinessLogic.Dto
             ShulId = shulId;
             Copies = copies;
             Description = description;
+            BookImg = bookImg;
         }
 
-        public BookDTO2()
+        public BookDTOInt()
         {
         }
     }
