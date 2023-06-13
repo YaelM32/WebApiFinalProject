@@ -46,13 +46,9 @@ namespace DataAccess.DBModels
             {
                 entity.Property(e => e.AuthorId).HasColumnName("Author_id");
 
-                entity.Property(e => e.BookImg)
-                    .HasMaxLength(500)
-                    .HasColumnName("book_img");
+                entity.Property(e => e.BookImgName).HasMaxLength(500);
 
                 entity.Property(e => e.CategoryId).HasColumnName("Category_id");
-
-                entity.Property(e => e.ChipId).HasColumnName("Chip_id");
 
                 entity.Property(e => e.Description).HasMaxLength(1000);
 

@@ -120,11 +120,10 @@ namespace DataAccess.Repository
                     book.ShulId = b.ShulId;
                     book.CategoryId = b.CategoryId;
                     book.AuthorId = b.AuthorId;
-                    book.ChipId = b.ChipId;
                     book.EditionId = b.EditionId;
                     book.Copies = b.Copies;
                     book.Description = b.Description;
-                    book.BookImg = b.BookImg;
+                    book.BookImgName = b.BookImgName;
                     dbContext.Books.Update(book);
                     await dbContext.SaveChangesAsync();
                 }

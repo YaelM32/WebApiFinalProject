@@ -67,7 +67,7 @@ namespace WebApiFinalProject.Controllers
             l = await bookService.GetBooksByShul(shulId);
             foreach (var item in l)
             {
-                BookDto a = new BookDto(item.Id, item.Name, item.ChipId, item.VolumeNum, GetAuthor((int)item.AuthorId, null).Result.Item2, GetCategory((int)item.CategoryId, null).Result.Item2, GetEdition((int)item.EditionId, null).Result.Item2, item.PublishYear, item.ShulId, item.Copies, item.Description, item.BookImg);
+                BookDto a = new BookDto( item.Id,item.Name, (int)item.VolumeNum, GetAuthor((int)item.AuthorId, null).Result.Item2, GetCategory((int)item.CategoryId, null).Result.Item2, GetEdition((int)item.EditionId, null).Result.Item2, item.PublishYear, item.ShulId, item.Copies, item.Description, item.BookImgName, item.MaxCopies);
                 b.books.Add(a);
 
             }
@@ -108,22 +108,22 @@ namespace WebApiFinalProject.Controllers
         }
 
         [HttpPost, Route("AddNewBook")]
-        public Task AddNewBook(BookDTOWithImage data)
+        public Task AddNewBook([FromQuery] BookDto Book,IFormFile data)
         {
-            BookDTOInt bDTO = new BookDTOInt() { Name = data.Book.Name, ChipId = data.Book.ChipId, VolumeNum = data.Book.VolumeNum, AuthorId = data.Book.Author != "" ? GetAuthor(null, (string)data.Book.Author).Result.Item1 : 6, CategoryId = data.Book.Category != "" ? GetCategory(null, (string)data.Book.Category).Result.Item1 : 5, EditionId = data.Book.Edition != "" ? GetEdition(null, (string)data.Book.Edition).Result.Item1 : 3, PublishYear = data.Book.PublishYear, ShulId = data.Book.ShulId, Copies = data.Book.Copies, Description = data.Book.Description, BookImg = data.BookImg!=null?uploadImageService.SaveBookImg(data.BookImg).Result: ""};
+            BookDTOInt bDTO = new BookDTOInt() { Name = Book.Name, VolumeNum = Book.VolumeNum, AuthorId = Book.Author != "" ? GetAuthor(null, (string)Book.Author).Result.Item1 : 6, CategoryId = Book.Category != "" ? GetCategory(null, (string)Book.Category).Result.Item1 : 5, EditionId = Book.Edition != "" ? GetEdition(null, (string)Book.Edition).Result.Item1 : 3, PublishYear = Book.PublishYear, ShulId = Book.ShulId, Copies = Book.Copies, Description = Book.Description, BookImgName = data!=null?uploadImageService.SaveBookImg(data).Result: "", MaxCopies=Book.MaxCopies};
             Book b = mapper.Map<Book>(bDTO);
             //b.BookImg = SaveBookImgName(book.BookImg).Result;
             return bookService.AddNewBook(b);
         }
 
         [HttpPut, Route("UpdateBook")]
-        public Task UpdateBook(int bookId, [FromBody] BookDto book, IFormFile bookImg)
+        public Task UpdateBook([FromQuery]BookDto book,IFormFile? data)
         {
-            BookDTOInt bDTO = new BookDTOInt() { Name = book.Name, ChipId = book.ChipId, VolumeNum = book.VolumeNum, AuthorId = GetAuthor(null, (string)book.Author).Result.Item1, CategoryId =  GetCategory(null, (string)book.Category).Result.Item1, EditionId = GetEdition(null, (string)book.Edition).Result.Item1, PublishYear = book.PublishYear, ShulId = book.ShulId, Copies = book.Copies, Description = book.Description, BookImg = uploadImageService.SaveBookImg(bookImg).Result };        
+            BookDTOInt bDTO = new BookDTOInt() { Id=book.Id,Name = book.Name,  VolumeNum = book.VolumeNum, AuthorId = GetAuthor(null, (string)book.Author).Result.Item1, CategoryId =  GetCategory(null, (string)book.Category).Result.Item1, EditionId = GetEdition(null, (string)book.Edition).Result.Item1, PublishYear = book.PublishYear, ShulId = book.ShulId, Copies = book.Copies, Description = book.Description, BookImgName = data != null ? uploadImageService.SaveBookImg(data).Result: book.BookImgName, MaxCopies = book.MaxCopies };        
             Book b = mapper.Map<Book>(bDTO);
             //b.BookImg = SaveBookImgName(book.BookImg).Result;
 
-            return bookService.UpdateBook(bookId, b);
+            return bookService.UpdateBook(book.Id, b);
         }
 
         [HttpDelete, Route("DeleteBook")]
@@ -164,9 +164,10 @@ namespace WebApiFinalProject.Controllers
                             b.Copies= Int32.Parse(strCopies);
                             b.Description = reader.GetValue(5).ToString();
                             b.ShulId = shulId;
-                            b.ChipId = 0;
-                            BookDTOWithImage book = new BookDTOWithImage { Book = b, BookImg = null };
-                            await AddNewBook(book);
+                            var maxCopies = reader.GetValue(5).ToString();
+                            b.MaxCopies= Int32.Parse(maxCopies);
+                            //BookDto book = new BookDto { Book = b, BookImg = null };
+                            await AddNewBook(b,null);
                         }
                         sheetCount++;
                     }

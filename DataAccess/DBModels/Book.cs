@@ -7,8 +7,7 @@ namespace DataAccess.DBModels
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public int ChipId { get; set; }
-        public int VolumeNum { get; set; }
+        public int? VolumeNum { get; set; }
         public int? AuthorId { get; set; }
         public int? CategoryId { get; set; }
         public int? EditionId { get; set; }
@@ -16,7 +15,8 @@ namespace DataAccess.DBModels
         public int ShulId { get; set; }
         public int? Copies { get; set; }
         public string? Description { get; set; }
-        public string? BookImg { get; set; }
+        public string? BookImgName { get; set; }
+        public int? MaxCopies { get; set; }
 
         public virtual Author? Author { get; set; }
         public virtual Category? Category { get; set; }

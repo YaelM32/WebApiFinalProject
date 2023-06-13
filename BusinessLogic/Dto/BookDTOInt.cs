@@ -10,8 +10,7 @@ namespace BusinessLogic.Dto
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public int ChipId { get; set; }
-        public int VolumeNum { get; set; }
+        public int? VolumeNum { get; set; }
         public int? AuthorId { get; set; }
         public int? CategoryId { get; set; }
         public int? EditionId { get; set; }
@@ -19,12 +18,13 @@ namespace BusinessLogic.Dto
         public int ShulId { get; set; }
         public int? Copies { get; set; }
         public string? Description { get; set; }
-        public string? BookImg { get; set; }
+        public string? BookImgName { get; set; }
+        public int? MaxCopies { get; set; }
 
-        public BookDTOInt(string name, int chipId, int volumeNum, int? authorId, int? categoryId, int? editionId, int? publishYear, int shulId, int? copies, string? description, string? bookImg)
+        public BookDTOInt(int id,string name, int volumeNum, int? authorId, int? categoryId, int? editionId, int? publishYear, int shulId, int? copies, string? description, string? bookImgName, int? maxCopies)
         {
+            Id = id;
             Name = name;
-            ChipId = chipId;
             VolumeNum = volumeNum;
             AuthorId = authorId;
             CategoryId = categoryId;
@@ -33,7 +33,8 @@ namespace BusinessLogic.Dto
             ShulId = shulId;
             Copies = copies;
             Description = description;
-            BookImg = bookImg;
+            BookImgName = bookImgName;
+            MaxCopies = maxCopies;
         }
 
         public BookDTOInt()
