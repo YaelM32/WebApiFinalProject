@@ -21,16 +21,17 @@ namespace BusinessLogic.Service
         {
             bookRepository = _bookRepository;
         }
-
+        //קבלת כל רשימת הספרים של בית כנסת מסוים
         public Task<List<Book>> GetBooksByShul(int shulId)
         {
             return bookRepository.GetBooksByShul(shulId);
         }
+        //קבלת כל הסופרים הקימים במאגר
         public Task<Author> GetAuthor(int? authorId, string? authorName)
         {
             return bookRepository.GetAuthor(authorId, authorName);
         }
-
+        //קבלת כל הקטגוריות הקימים במאגר
         public Task<Category> GetCategory(int? categoryId, string? categoryName)
         {
             return bookRepository.GetCategory(categoryId, categoryName);

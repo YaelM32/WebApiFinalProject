@@ -5,8 +5,6 @@ using DataAccess.DBModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace WebApiFinalProject.Controllers
 {
     [Route("api/[controller]")]
@@ -20,8 +18,6 @@ namespace WebApiFinalProject.Controllers
             userService = _userService;
             mapper = _mapper;
         }
-
-
 
         [EnableCors("AllowOrigin")]
         [HttpGet,Route("login")]
@@ -48,12 +44,13 @@ namespace WebApiFinalProject.Controllers
         [HttpGet("getEmail")]
         public Task getEmail([FromQuery]string email)
         {
-            return userService.getEmail(email);
+            return EmailController.sendEmailForChangePwd(email);
         }
-        // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpPost("sendReceipt")]
+        public Task sendReceipt([FromQuery] int idUser,[FromBody]List<BookDTO> books)
         {
+            User user = userService.getUserById(idUser).Result;
+            return EmailController.sendReceiptEmail(user,books);
         }
     }
 }

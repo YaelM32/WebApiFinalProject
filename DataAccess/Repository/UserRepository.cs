@@ -101,47 +101,12 @@ namespace DataAccess.Repository
             var base64Bytes = System.Convert.FromBase64String(base64);
             return System.Text.Encoding.UTF8.GetString(base64Bytes);
         }
-        public async Task getEmail(string email)
+
+        public async Task<User> getUserById(int id)
         {
-            using (SmtpClient client = new SmtpClient()
-            {
-                Host = "smtp.office365.com",
-                Port = 587,
-                UseDefaultCredentials = false, // This require to be before setting Credentials property
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                Credentials = new NetworkCredential("36325565166@mby.co.il", "Student@264"), // you must give a full email address for authentication 
-                TargetName = "STARTTLS/smtp.office365.com", // Set to avoid MustIssueStartTlsFirst exception
-                EnableSsl = true // Set to avoid secure connection exception
-            })
-            {
-                var url = $"http://localhost:3000/newPassword/${Base64Encode(email)}";
-                var link = $"<a href='{url}'>Click here</a>";
-                MailMessage message = new MailMessage()
-                {
-                    From = new MailAddress("36325565166@mby.co.il"), // sender must be a full email address
-                    Subject = "איפוס סיסמא",
-                    IsBodyHtml = true,
-
-                    Body = "<html><body dir=\"rtl\"><h1>איפוס סיסמא למערכת תרומות ספרים</h1><p>מייל זה נשלח לך עבור איפוס סיסמא, נא ללחוץ על הקישור המצורף</p>" +
-                    $"<a href='{url}'>לחץ כאן לאיפוס סיסמא</a></body></html>",
-
-                    // 
-                    BodyEncoding = System.Text.Encoding.UTF8,
-                    SubjectEncoding = System.Text.Encoding.UTF8,
-
-                };
-
-                message.To.Add(email);
-
-                try
-                {
-                    client.Send(message);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+            User u = await dbContext.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+            return u;
         }
+     
     }
 }

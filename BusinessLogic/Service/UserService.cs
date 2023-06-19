@@ -1,4 +1,5 @@
-﻿using BusinessLogic.IService;
+﻿using BusinessLogic.DTO;
+using BusinessLogic.IService;
 using DataAccess.DBModels;
 using DataAccess.IRepository;
 using System;
@@ -33,10 +34,11 @@ namespace BusinessLogic.Service
             return userRepository.ChangePassword(email, Password);
         }
 
-        public Task getEmail(string email)
+        public Task<User> getUserById(int id)
         {
-            return userRepository.getEmail(email);
-
+            return userRepository.getUserById(id);
         }
+
+
     }
 }

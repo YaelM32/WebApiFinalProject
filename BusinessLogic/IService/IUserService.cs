@@ -1,4 +1,5 @@
-﻿using DataAccess.DBModels;
+﻿using BusinessLogic.DTO;
+using DataAccess.DBModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,7 @@ namespace BusinessLogic.IService
         public Task<User> checkUserExist(string email, string password);
         public Task SignIn(User user);
         public Task ChangePassword(string email, string Password);
-
-        public Task getEmail(string email);
+        public Task<User> getUserById(int id);
 
     }
 }

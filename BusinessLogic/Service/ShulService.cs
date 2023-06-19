@@ -19,20 +19,21 @@ namespace BusinessLogic.Service
         {
             this.shulRepository = shulRepository;
         }
-
+        //קבלת פרטי בית כנסת מסוים
         public Task<Shul> GetShulById(int shulId)
         {
             return shulRepository.GetShulById(shulId);
         }
-
-        public Task SetMap(int shulId, string fileName)
-        {
-            return shulRepository.SetMap(shulId,fileName);
-        }
+        //שמירת לוגו לבית כנסת מסוים
         public Task SetLogo(int shulId, string fileName)
         {
             return shulRepository.SetLogo(shulId, fileName);
         }
+        public Task SetMap(int shulId, string fileName)
+        {
+            return shulRepository.SetMap(shulId,fileName);
+        }
+
         public Task<int> SignIn(Shul shul)//, string FileName)
         {
             return shulRepository.SignIn(shul);//,  FileName);
