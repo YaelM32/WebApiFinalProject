@@ -8,8 +8,6 @@ public class MappingProfile : Profile
     {
         CreateMap<AuthorDTO, Author>();
         CreateMap<Author, AuthorDTO>();
-        CreateMap<BookDTOWithImage, Book>();
-        CreateMap<Book, BookDTOWithImage>();
         CreateMap<BookDTOInt, Book>();
         CreateMap<Book, BookDTOInt>();
         CreateMap<CategoryDTO, Category>();
