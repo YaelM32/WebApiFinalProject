@@ -114,19 +114,24 @@ namespace DataAccess.Repository
                 EnableSsl = true // Set to avoid secure connection exception
             })
             {
-
+                var url = $"http://localhost:3000/newPassword/${Base64Encode(email)}";
+                var link = $"<a href='{url}'>Click here</a>";
                 MailMessage message = new MailMessage()
                 {
                     From = new MailAddress("36325565166@mby.co.il"), // sender must be a full email address
                     Subject = "איפוס סיסמא",
                     IsBodyHtml = true,
-                    Body = "http://localhost:3000/newPassword/" + Base64Encode(email),
+
+                    Body = "<html><body dir=\"rtl\"><h1>איפוס סיסמא למערכת תרומות ספרים</h1><p>מייל זה נשלח לך עבור איפוס סיסמא, נא ללחוץ על הקישור המצורף</p>" +
+                    $"<a href='{url}'>לחץ כאן לאיפוס סיסמא</a></body></html>",
+
+                    // 
                     BodyEncoding = System.Text.Encoding.UTF8,
                     SubjectEncoding = System.Text.Encoding.UTF8,
 
                 };
-            
-                    message.To.Add(email);
+
+                message.To.Add(email);
 
                 try
                 {

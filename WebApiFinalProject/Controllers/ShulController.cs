@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLogic.Dto;
+using BusinessLogic.DTO;
 using BusinessLogic.IService;
 using DataAccess.DBModels;
 using Microsoft.AspNetCore;
@@ -23,12 +23,19 @@ namespace WebApiFinalProject.Controllers
             mapper = _mapper;
         }
         [HttpPost("SignIn")]
-        public Task<int> SignIn([FromBody] ShulDto shulDto)
+        //הירשמות פעם ראשונה למערכת
+        public Task<int> SignIn([FromBody] ShulDTO shulDTO)
         {
-            Shul shul = mapper.Map<Shul>(shulDto);
+            Shul shul = mapper.Map<Shul>(shulDTO);
             return shulService.SignIn(shul);
         }
-
+        [HttpGet("GetShulById")]
+        //קבלת כל פרטי בית כנסת מסוים
+        public async Task<ShulDTO> GetShulById([FromQuery] int shulId)
+        {
+            Shul s = await shulService.GetShulById(shulId);
+            return mapper.Map<ShulDTO>(s);
+        }
 
         [HttpPost, Route("UploadImage")]
         public async Task UploadFile(int shulId, IFormFile userfile)
@@ -97,12 +104,7 @@ namespace WebApiFinalProject.Controllers
             return shulService.SetLogo(shulId, Filename);
         }
 
-        [HttpGet("GetShulById")]
-        public async Task<ShulDto> GetShulById([FromQuery] int shulId)
-        {
-            Shul s = await shulService.GetShulById(shulId);
-            return mapper.Map<ShulDto>(s);
-        }
+
 
     }
 }

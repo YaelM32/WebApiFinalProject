@@ -21,5 +21,6 @@ namespace DataAccess.DBModels
         public virtual Author? Author { get; set; }
         public virtual Category? Category { get; set; }
         public virtual Edition? Edition { get; set; }
+        public virtual Shul Shul { get; set; } = null!;
     }
 }

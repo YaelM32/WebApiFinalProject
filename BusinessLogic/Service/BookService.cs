@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Dto;
+﻿using BusinessLogic.DTO;
 using BusinessLogic.IService;
 using DataAccess.DBModels;
 using DataAccess.IRepository;

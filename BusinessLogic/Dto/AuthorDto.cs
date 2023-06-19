@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Dto
+namespace BusinessLogic.DTO
 {
-    public class AuthorDto
+    public class AuthorDTO
     {
         public string Name { get; set; } = null!;
     }

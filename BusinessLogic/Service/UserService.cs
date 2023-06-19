@@ -17,17 +17,17 @@ namespace BusinessLogic.Service
         {
             userRepository = _userRepository;
         }
-
+        //בדיקה האם המשתמש קיים במערכת
         public Task<User> checkUserExist(string email, string password)
         {
             return userRepository.checkUserExist(email, password);
         }
-
+        //רישום משתמש חדש
         public Task SignIn(User user)
         {
             return userRepository.SignIn(user);
         }
-
+        //שינוי סיסמא
         public Task ChangePassword(string email, string Password)
         {
             return userRepository.ChangePassword(email, Password);

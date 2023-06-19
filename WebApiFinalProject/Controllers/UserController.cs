@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLogic.Dto;
+using BusinessLogic.DTO;
 using BusinessLogic.IService;
 using DataAccess.DBModels;
 using Microsoft.AspNetCore.Cors;
@@ -23,25 +23,24 @@ namespace WebApiFinalProject.Controllers
 
 
 
-        // GET: api/<UserController>
         [EnableCors("AllowOrigin")]
         [HttpGet,Route("login")]
+        //ביצוע בדיקה האם המשתמש שנכנס כרגע רשום במערכת
         public async Task<User> checkUserExist(string email, string password)
         {
            return await userService.checkUserExist(email, password);
         }
        
-
-        //POST api/<UserController>
         [HttpPost("SignIn")]
-        public Task SignIn([FromBody] UserDto userDto)
+        //הוספת משתמשים חדשים לבית כנסת
+        public Task SignIn([FromBody] UserDTO userDTO)
         {           
-            User user = mapper.Map<User>(userDto);
+            User user = mapper.Map<User>(userDTO);
             return userService.SignIn(user);
         }
 
-        // PUT api/<UserController>
         [HttpPut("ChangePassword")]
+        //שינוי סיסמא לבית כנסת
         public Task ChangePassword(string email, string Password)
         {
             return userService.ChangePassword(email, Password);

@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Dto;
+﻿using BusinessLogic.DTO;
 using DataAccess.DBModels;
 using Microsoft.AspNetCore.Http;
 using System;

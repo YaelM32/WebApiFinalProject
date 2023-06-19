@@ -76,6 +76,12 @@ namespace DataAccess.DBModels
                     .WithMany(p => p.Books)
                     .HasForeignKey(d => d.EditionId)
                     .HasConstraintName("FK_Books_Editions");
+
+                entity.HasOne(d => d.Shul)
+                    .WithMany(p => p.Books)
+                    .HasForeignKey(d => d.ShulId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Books_Shuls");
             });
 
             modelBuilder.Entity<Category>(entity =>
@@ -132,7 +138,7 @@ namespace DataAccess.DBModels
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.PermissionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_User_Permission");
+                    .HasConstraintName("FK_Users_Permissions");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Dto
+namespace BusinessLogic.DTO
 {
-    public class UserDto
+    public class UserDTO
     {
         public string Name { get; set; } = null!;
         public string Password { get; set; } = null!;

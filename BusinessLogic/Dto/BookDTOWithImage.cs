@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Dto
+namespace BusinessLogic.DTO
 {
     public class BookDTOWithImage
     {
-        public BookDto Book { get; set; }
+        public BookDTO Book { get; set; }
         public IFormFile? BookImg { get; set; }
 
         public BookDTOWithImage()

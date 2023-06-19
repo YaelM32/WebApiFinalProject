@@ -1,27 +1,27 @@
 ﻿using AutoMapper;
-using BusinessLogic.Dto;
+using BusinessLogic.DTO;
 using DataAccess.DBModels;
 
 public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<AuthorDto, Author>();
-        CreateMap<Author, AuthorDto>();
+        CreateMap<AuthorDTO, Author>();
+        CreateMap<Author, AuthorDTO>();
         CreateMap<BookDTOWithImage, Book>();
         CreateMap<Book, BookDTOWithImage>();
         CreateMap<BookDTOInt, Book>();
         CreateMap<Book, BookDTOInt>();
-        CreateMap<CategoryDto, Category>();
-        CreateMap<Category, CategoryDto>();
-        CreateMap<EditionDto, Edition>();
-        CreateMap<Edition, EditionDto>();
-        CreateMap<PermissionDto, Permission>();
-        CreateMap<Permission, PermissionDto>();
-        CreateMap<ShulDto, Shul>();
-        CreateMap<Shul, ShulDto>();
-        CreateMap<UserDto, User>();
-        CreateMap<User, UserDto>();
+        CreateMap<CategoryDTO, Category>();
+        CreateMap<Category, CategoryDTO>();
+        CreateMap<EditionDTO, Edition>();
+        CreateMap<Edition, EditionDTO>();
+        CreateMap<PermissionDTO, Permission>();
+        CreateMap<Permission, PermissionDTO>();
+        CreateMap<ShulDTO, Shul>();
+        CreateMap<Shul, ShulDTO>();
+        CreateMap<UserDTO, User>();
+        CreateMap<User, UserDTO>();
 
     }
 }

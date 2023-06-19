@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-namespace BusinessLogic.Dto
+namespace BusinessLogic.DTO
 {
-    public class ShulDto
+    public class ShulDTO
     {
         public string Name { get; set; } = null!;
         public string Address { get; set; } = null!;

@@ -1,17 +1,15 @@
-﻿using BusinessLogic.IService;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BusinessLogic.Service
+namespace WebApiFinalProject.Controllers
 {
-    public class UploadImageService:IUploadImageService
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UploadImageController : ControllerBase
     {
-        public async Task<string> SaveBookImg(IFormFile userfile)
+        [HttpPost]
+        //שמירת התמונה של ספר ולוגו
+        public static async Task<string> SaveBookImg(IFormFile userfile)
         {
             string filename = userfile.FileName;
             filename = Path.GetFileName(filename);
@@ -20,9 +18,11 @@ namespace BusinessLogic.Service
             await userfile.CopyToAsync(stream);
             return filename;
         }
+        [HttpGet]
+        //קבלת השם של התמונה שנשמרה
         public async Task<string> ReturnBookImgName(IFormFile userfile)
         {
-            return userfile.FileName;         
+            return userfile.FileName;
         }
     }
 }

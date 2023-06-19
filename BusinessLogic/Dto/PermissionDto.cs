@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Dto
+namespace BusinessLogic.DTO
 {
-    public class PermissionDto
+    public class PermissionDTO
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;

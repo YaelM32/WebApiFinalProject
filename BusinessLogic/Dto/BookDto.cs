@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BusinessLogic.Dto
+namespace BusinessLogic.DTO
 {
-    public class BookDto
+    public class BookDTO
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
@@ -22,7 +22,7 @@ namespace BusinessLogic.Dto
         public string? Description { get; set; }
         public string? BookImgName { get; set; }
         public int? MaxCopies { get; set; }
-        public BookDto(int id,string name, int volumeNum, string? author, string? category, string? edition, int? publishYear, int shulId,int? copies, string? description, string? bookImgName, int? maxCopies)
+        public BookDTO(int id,string name, int volumeNum, string? author, string? category, string? edition, int? publishYear, int shulId,int? copies, string? description, string? bookImgName, int? maxCopies)
         {
             Id = id;
             Name = name;
@@ -38,7 +38,7 @@ namespace BusinessLogic.Dto
             MaxCopies = maxCopies;
         }
 
-        public BookDto()
+        public BookDTO()
         {
         }
     }
