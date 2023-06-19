@@ -8,6 +8,7 @@ namespace BusinessLogic.DTO
 {
     public class AuthorDTO
     {
+        //jjj
         public string Name { get; set; } = null!;
     }
 }
