@@ -10,13 +10,13 @@ namespace DataAccess.IRepository
 {
     public interface IShulRepository
     {
-        public Task<int> SignIn(Shul shul);//, string FileName);
-        public Task UploadFile(int shulId, IFormFile userfile);
+        Task<List<Shul>> GetShuls();
+        Task<int> SignIn(Shul shul);
+        Task UploadFile(int shulId, IFormFile userfile);
+        Task SetMap(int shulId, string fileName);
+        Task SetLogo(int shulId, string fileName);
 
-        public Task SetMap(int shulId, string fileName);
-        public Task SetLogo(int shulId, string fileName);
-
-        public Task<Shul> GetShulById(int shulId);
+        Task<Shul> GetShulById(int shulId);
 
 
     }

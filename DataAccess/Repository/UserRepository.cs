@@ -49,16 +49,16 @@ namespace DataAccess.Repository
         {
             try
             {
-                User u = await dbContext.Users.Where(u => u.Name == user.Name).FirstOrDefaultAsync();
-                if (u != null && u.Name == user.Name)
-                {
-                    Console.WriteLine("The name is exist");
-                }
-                else
-                {
+                //User u = await dbContext.Users.Where(u => u.Name == user.Name).FirstOrDefaultAsync();
+                //if (u != null && u.Name == user.Name)
+                //{
+                //    Console.WriteLine("The name is exist");
+                //}
+                //else
+                //{
                     dbContext.Users.AddAsync(user);
                     await dbContext.SaveChangesAsync();
-                }
+                //}
 
             }
             catch (Exception ex)

@@ -19,7 +19,10 @@ namespace DataAccess.Repository
         {
             dbContext = _dbContext;
         }
-
+        public async Task<List<Shul>> GetShuls()
+        {
+            return await dbContext.Shuls.ToListAsync();
+        }
         public async Task<Shul> GetShulById(int shulId)
         {
            return await dbContext.Shuls.FindAsync(shulId);

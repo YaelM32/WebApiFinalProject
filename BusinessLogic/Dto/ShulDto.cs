@@ -10,9 +10,9 @@ namespace BusinessLogic.DTO
 {
     public class ShulDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Address { get; set; } = null!;
-        public string? Map { get; set; }
         public string? Logo { get; set; }
 
     }

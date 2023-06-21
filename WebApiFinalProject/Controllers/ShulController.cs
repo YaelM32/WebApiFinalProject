@@ -4,6 +4,7 @@ using BusinessLogic.IService;
 using DataAccess.DBModels;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
 
 
@@ -21,6 +22,12 @@ namespace WebApiFinalProject.Controllers
         {
             shulService = _shulService;
             mapper = _mapper;
+        }
+        [HttpGet("GetShuls")]
+        public async Task<List<ShulDTO>> GetShuls()
+        {
+            List < Shul>l =await shulService.GetShuls();
+            return mapper.Map<List<ShulDTO>>(l);
         }
         [HttpPost("SignIn")]
         //הירשמות פעם ראשונה למערכת

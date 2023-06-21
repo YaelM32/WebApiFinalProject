@@ -11,12 +11,11 @@ namespace BusinessLogic.IService
 {
     public interface IShulService
     {
-        public Task<int> SignIn(Shul shul);
-        public Task UploadFile(int shulId, IFormFile userfile);
-        public Task SetMap(int shulId, string fileName);
-        public Task SetLogo(int shulId, string fileName);
-
-        public Task<Shul> GetShulById(int shulId);
-
+        Task<List<Shul>> GetShuls();
+        Task<int> SignIn(Shul shul);
+        Task UploadFile(int shulId, IFormFile userfile);
+        Task SetMap(int shulId, string fileName);
+        Task SetLogo(int shulId, string fileName);
+        Task<Shul> GetShulById(int shulId);
     }
 }
