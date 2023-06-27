@@ -23,7 +23,6 @@ namespace WebApiFinalProject.Controllers
         private BookControllerSingleton()
         {
 
-
         }
         private static BookControllerSingleton _instance = null;
 
@@ -91,7 +90,7 @@ namespace WebApiFinalProject.Controllers
         }
         //הוספת ספר חדש למאגר
         [HttpPost, Route("AddNewBook")]
-        public Task AddNewBook([FromQuery] BookDTO Book, IFormFile data)
+        public Task AddNewBook([FromQuery] BookDTO Book, IFormFile? data)
         {
             BookDTOInt bDTO = new BookDTOInt() { Name = Book.Name, VolumeNum = Book.VolumeNum,
                 AuthorId = Book.Author != null ? GetAuthor(null, (string)Book.Author).Result.Item1 : 6,

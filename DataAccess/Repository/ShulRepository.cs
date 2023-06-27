@@ -39,7 +39,6 @@ namespace DataAccess.Repository
                 dbContext.Update(s);
                 await dbContext.SaveChangesAsync();
                 }
-
             }
             
             catch (Exception ex)
@@ -51,7 +50,7 @@ namespace DataAccess.Repository
         {
             try
             {
-                Shul s = dbContext.Shuls.Find(shulId);
+                Shul s = await dbContext.Shuls.FindAsync(shulId);
                 if (s != null)
                 {
                     s.Logo = fileName;
@@ -88,11 +87,27 @@ namespace DataAccess.Repository
                 Image image = new Image() { Filepath = "images/" + userfile.FileName, Filename = userfile.FileName };
                 await dbContext.AddAsync(image);
                 await dbContext.SaveChangesAsync();
+               
             }
 
             catch (Exception ex)
             {
                 throw new Exception("Error in SetMap function " + ex.Message);
+            }
+        }
+
+        public async Task EditShulDetails(int shulId, Shul shul)
+        {
+            Shul s = await dbContext.Shuls.Where(a => a.Id == shulId).FirstOrDefaultAsync();
+            if (s != null)
+            {
+                if(shul.Name!=null)
+                   s.Name = shul.Name;
+                if (shul.Address != null)
+                    s.Address = shul.Address;
+                //s.Logo = shul.Logo;
+                dbContext.Shuls.Update(s);
+                await dbContext.SaveChangesAsync();
             }
         }
     }

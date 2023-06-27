@@ -15,9 +15,8 @@ namespace DataAccess.IRepository
         Task UploadFile(int shulId, IFormFile userfile);
         Task SetMap(int shulId, string fileName);
         Task SetLogo(int shulId, string fileName);
-
         Task<Shul> GetShulById(int shulId);
-
+        public Task EditShulDetails(int shulId, Shul shul);
 
     }
 }

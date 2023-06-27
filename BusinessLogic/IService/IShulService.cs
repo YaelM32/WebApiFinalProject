@@ -17,5 +17,6 @@ namespace BusinessLogic.IService
         Task SetMap(int shulId, string fileName);
         Task SetLogo(int shulId, string fileName);
         Task<Shul> GetShulById(int shulId);
+        public Task EditShulDetails(int shulId, Shul shulDTO);
     }
 }

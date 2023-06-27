@@ -124,6 +124,7 @@ namespace DataAccess.Repository
                     book.Copies = b.Copies;
                     book.Description = b.Description;
                     book.BookImgName = b.BookImgName;
+                    book.MaxCopies = b.MaxCopies;
                     dbContext.Books.Update(book);
                     await dbContext.SaveChangesAsync();
                 }

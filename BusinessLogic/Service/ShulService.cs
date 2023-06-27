@@ -50,5 +50,10 @@ namespace BusinessLogic.Service
         {
             return shulRepository.UploadFile(shulId, userfile);
         }
+
+        public Task EditShulDetails(int shulId, Shul shulDTO)
+        {
+            return shulRepository.EditShulDetails(shulId, shulDTO);
+        }
     }
 }
