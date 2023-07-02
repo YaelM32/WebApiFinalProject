@@ -4,6 +4,7 @@ using BusinessLogic.IService;
 using BusinessLogic.Service;
 using DataAccess.DBModels;
 using ExcelDataReader;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -37,6 +38,8 @@ namespace WebApiFinalProject.Controllers
     }
     [Route("api/[controller]")]
     [ApiController]
+   // [Authorize]
+
     public class BookController : ControllerBase
     {
         IBookService bookService;

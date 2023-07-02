@@ -8,6 +8,7 @@ namespace DataAccess.DBModels
         public Shul()
         {
             Books = new HashSet<Book>();
+            Users = new HashSet<User>();
         }
 
         public int Id { get; set; }
@@ -17,5 +18,6 @@ namespace DataAccess.DBModels
         public string? Logo { get; set; }
 
         public virtual ICollection<Book> Books { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

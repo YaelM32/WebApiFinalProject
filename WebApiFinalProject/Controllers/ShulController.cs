@@ -4,6 +4,7 @@ using BusinessLogic.DTO;
 using BusinessLogic.IService;
 using DataAccess.DBModels;
 using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using static System.Net.Mime.MediaTypeNames;
@@ -15,6 +16,8 @@ namespace WebApiFinalProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
+
     public class ShulController : ControllerBase
     {
         IShulService shulService;
@@ -25,6 +28,7 @@ namespace WebApiFinalProject.Controllers
             mapper = _mapper;
         }
         [HttpGet("GetShuls")]
+        [AllowAnonymous]
         public async Task<List<ShulDTO>> GetShuls()
         {
             List<Shul> l = await shulService.GetShuls();
@@ -32,12 +36,14 @@ namespace WebApiFinalProject.Controllers
         }
         [HttpPost("SignIn")]
         //הירשמות פעם ראשונה למערכת
+        [AllowAnonymous]
         public Task<int> SignIn([FromBody] ShulDTO shulDTO)
         {
             Shul shul = mapper.Map<Shul>(shulDTO);
             return shulService.SignIn(shul);
         }
         [HttpGet("GetShulById")]
+        [AllowAnonymous]
         //קבלת כל פרטי בית כנסת מסוים
         public async Task<ShulDTO> GetShulById([FromQuery] int shulId)
         {
@@ -46,6 +52,7 @@ namespace WebApiFinalProject.Controllers
         }
 
         [HttpPost, Route("UploadImage")]
+        [AllowAnonymous]
         public async Task UploadFile(int shulId, IFormFile userfile)
         {
 

@@ -132,6 +132,10 @@ namespace DataAccess.DBModels
 
                 entity.Property(e => e.PermissionId).HasColumnName("permission_Id");
 
+                entity.Property(e => e.Salt)
+                    .HasMaxLength(50)
+                    .HasColumnName("salt");
+
                 entity.Property(e => e.ShulId).HasColumnName("shul_Id");
 
                 entity.HasOne(d => d.Permission)
@@ -139,6 +143,12 @@ namespace DataAccess.DBModels
                     .HasForeignKey(d => d.PermissionId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Users_Permissions");
+
+                entity.HasOne(d => d.Shul)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.ShulId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Users_Shuls");
             });
 
             OnModelCreatingPartial(modelBuilder);

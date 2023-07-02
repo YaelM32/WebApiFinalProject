@@ -31,11 +31,11 @@ namespace DataAccess.Repository
             dbContext = _dbContext;
         }
 
-        public async Task<User> checkUserExist(string email, string password)
+        public async Task<User> checkUserExist(string email)
         {
             try
             {
-                User u1 = await dbContext.Users.Where(u => u.Email == email && u.Password == password).FirstOrDefaultAsync();
+                User u1 = await dbContext.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
                 return u1 == null ? null : u1;
             }
             catch (Exception ex)
