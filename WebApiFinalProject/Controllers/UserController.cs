@@ -10,7 +10,7 @@ namespace WebApiFinalProject.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-  //  [Authorize]
+    [Authorize]
     public class UserController : ControllerBase
     {
         IUserService userService;
@@ -24,7 +24,7 @@ namespace WebApiFinalProject.Controllers
         [EnableCors("AllowOrigin")]
         [HttpGet,Route("login")]
         //ביצוע בדיקה האם המשתמש שנכנס כרגע רשום במערכת
-       // [AllowAnonymous]
+        [AllowAnonymous]
         public async Task<User> checkUserExist(string email, string password)
         {
            return await userService.checkUserExist(email, password);
@@ -32,7 +32,7 @@ namespace WebApiFinalProject.Controllers
        
         [HttpPost("SignIn")]
         //הוספת משתמשים חדשים לבית כנסת
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public Task SignIn([FromBody] UserDTO userDTO)
         {           
             User user = mapper.Map<User>(userDTO);
@@ -47,6 +47,7 @@ namespace WebApiFinalProject.Controllers
             return userService.ChangePassword(email, Password);
         }
         [HttpGet("getEmail")]
+        [AllowAnonymous]
         public Task getEmail([FromQuery]string email)
         {
             return EmailController.sendEmailForChangePwd(email);

@@ -38,8 +38,7 @@ namespace WebApiFinalProject.Controllers
     }
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize]
-
+    //[Authorize]
     public class BookController : ControllerBase
     {
         IBookService bookService;
@@ -62,6 +61,7 @@ namespace WebApiFinalProject.Controllers
 
 
         [HttpGet("ShulId")]
+        
         //קבלת כל הספרים שך בית כנסת עם קוד בית כנסת מסוים
         public async Task<List<BookDTO>> GetBooksByShul([FromQuery] int shulId)
         {
@@ -84,8 +84,10 @@ namespace WebApiFinalProject.Controllers
         public Task UpdateBook([FromQuery] BookDTO book, IFormFile? data)
         {
             BookDTOInt bDTO = new BookDTOInt() { Id = book.Id, Name = book.Name, VolumeNum = book.VolumeNum,
-                AuthorId = GetAuthor(null, (string)book.Author).Result.Item1, CategoryId = GetCategory(null, (string)book.Category).Result.Item1,
-                EditionId = GetEdition(null, (string)book.Edition).Result.Item1, PublishYear = book.PublishYear, ShulId = book.ShulId,
+                AuthorId = (string)book.Author!=null? GetAuthor(null, (string)book.Author).Result.Item1:6,
+                CategoryId = (string)book.Category!=null? GetCategory(null, (string)book.Category).Result.Item1:5,
+                EditionId = (string)book.Edition!=null?GetEdition(null, (string)book.Edition).Result.Item1:3,
+                PublishYear = book.PublishYear, ShulId = book.ShulId,
                 Copies = book.Copies, Description = book.Description,
                 BookImgName = data != null ? UploadImageController.SaveBookImg(data).Result : book.BookImgName, MaxCopies = book.MaxCopies };
             Book b = mapper.Map<Book>(bDTO);
