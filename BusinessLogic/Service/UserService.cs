@@ -64,12 +64,12 @@ namespace BusinessLogic.Service
             return userRepository.SignIn(user);
         }
         //שינוי סיסמא
-        public Task ChangePassword(string email, string Password)
+        public async Task ChangePassword(string email, string Password)
         {
-            //user.Salt = passwordHashHelper.GenerateSalt(8);
-            //user.Password = passwordHashHelper.HashPassword(user.Password, user.Salt, 1000, 8);
-            return userRepository.ChangePassword(email, Password);
-
+            User user = await userRepository.getUserByEmail(email);
+            user.Salt = passwordHashHelper.GenerateSalt(8);
+            user.Password = passwordHashHelper.HashPassword(user.Password, user.Salt, 1000, 8);
+            userRepository.ChangePassword(user, Password);
         }
 
         public Task<User> getUserById(int id)
