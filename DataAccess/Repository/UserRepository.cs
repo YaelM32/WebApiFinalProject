@@ -67,15 +67,16 @@ namespace DataAccess.Repository
             }
         }
 
-        public async Task ChangePassword(string email, string Password)
+        public async Task ChangePassword(User user, string Password)
         {
             try
             {
-                email = Base64Decode(email);
-                User u = await dbContext.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+                //email = Base64Decode(email);
+                User u = await dbContext.Users.Where(u => u == user).FirstOrDefaultAsync();
                 if (u != null)
                 {
                     u.Password = Password;
+                    u.Salt = user.Salt;
                     dbContext.Users.Update(u);
                     await dbContext.SaveChangesAsync();
                 }
@@ -107,6 +108,11 @@ namespace DataAccess.Repository
             User u = await dbContext.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
             return u;
         }
-     
+        public async Task<User> getUserByEmail(string email)
+        {
+            email = System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(email));
+            User u = await dbContext.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+            return u;
+        }
     }
 }

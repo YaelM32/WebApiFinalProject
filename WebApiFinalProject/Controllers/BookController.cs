@@ -5,6 +5,7 @@ using BusinessLogic.Service;
 using DataAccess.DBModels;
 using ExcelDataReader;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ namespace WebApiFinalProject.Controllers
 
 
         [HttpGet("ShulId")]
-        
+        //[Authorize]
         //קבלת כל הספרים שך בית כנסת עם קוד בית כנסת מסוים
         public async Task<List<BookDTO>> GetBooksByShul([FromQuery] int shulId)
         {
@@ -107,8 +108,6 @@ namespace WebApiFinalProject.Controllers
             return bookService.AddNewBook(b);
         }
 
-
-
         [HttpDelete, Route("DeleteBook")]
         public Task DeleteBook(int BookId)
         {
@@ -136,19 +135,20 @@ namespace WebApiFinalProject.Controllers
                         if (sheetCount != 1)
                         {
                             b.Name = reader.GetValue(0).ToString();
-                            b.Author = reader.GetValue(1).ToString();
-                            b.Category = reader.GetValue(2).ToString();
-                            b.Edition = reader.GetValue(3).ToString();
-                            var strPublishYear = reader.GetValue(4).ToString();
+                            b.Author = b.Author!=null? reader.GetValue(1).ToString() : "";
+                            b.Category = b.Category!=null? reader.GetValue(2).ToString():"";
+                            b.Edition = b.Edition != null ? reader.GetValue(3).ToString():"";
+                            var strPublishYear = b.PublishYear != null ? reader.GetValue(4).ToString(): DateTime.Now.Year.ToString();
                             b.PublishYear = Int32.Parse(strPublishYear);
-                            var strVolumeNum = reader.GetValue(5).ToString();
+                            var strVolumeNum = b.VolumeNum != null ? reader.GetValue(5).ToString():"1";
                             b.VolumeNum = Int32.Parse(strVolumeNum);
-                            var strCopies = reader.GetValue(5).ToString();
-                            b.Copies = Int32.Parse(strCopies);
-                            b.Description = reader.GetValue(5).ToString();
-                            b.ShulId = shulId;
-                            var maxCopies = reader.GetValue(5).ToString();
+                            var strCopies = b.Copies != null ? reader.GetValue(5).ToString():"1";
+                            b.Copies = Int32.Parse(strCopies); 
+                            var maxCopies = b.MaxCopies != null ? reader.GetValue(5).ToString():"10";
                             b.MaxCopies = Int32.Parse(maxCopies);
+                            b.Description = b.Description != null ? reader.GetValue(5).ToString():"";
+                            b.ShulId = shulId;
+                           
                             //BookDTO book = new BookDTO { Book = b, BookImg = null };
                             await AddNewBook(b, null);
                         }

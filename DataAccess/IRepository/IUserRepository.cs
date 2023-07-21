@@ -12,7 +12,8 @@ namespace DataAccess.IRepository
 
         public Task<User> checkUserExist(string email);
         public Task SignIn(User user);
-        public Task ChangePassword(string email, string Password);
+        public Task ChangePassword(User user, string Password);
         public Task<User> getUserById(int id);
+        public Task<User> getUserByEmail(string email);
     }
 }
