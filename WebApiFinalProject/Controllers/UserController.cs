@@ -41,6 +41,7 @@ namespace WebApiFinalProject.Controllers
 
         [HttpPut("ChangePassword")]
         //שינוי סיסמא לבית כנסת
+        //
         [AllowAnonymous]
         public Task ChangePassword(string email, string Password)
         {
